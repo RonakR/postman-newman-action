@@ -13,5 +13,5 @@ jobs:
       - uses: matt-ball/newman-action@master
         with:
           apiKey: ${{ secrets.POSTMAN_API_KEY }}
-          collection: 94534645-3c7c-4bae-8f9c-ca44011d2cd4
+          collection: 1882345-209c3c8a-cabd-4c38-88f2-0bdfb03f8c75
           environment: 1882345-b71294da-ae47-4b3c-bd61-366983cf15b1
