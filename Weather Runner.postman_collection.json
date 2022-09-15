@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "209c3c8a-cabd-4c38-88f2-0bdfb03f8c75",
+		"name": "Weather Runner",
+		"description": "Collection to demonstrate conditional login in Post-Request Tests. ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get San Fran Weather",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6daf5dd7-c640-47df-a215-a247c3ff14fa",
+						"exec": [
+							"const jsonData = pm.response.json()",
+							"const temp = jsonData.main.temp",
+							"",
+							"pm.test(\"Is it sensible weather?\", function () {",
+							"    pm.expect(temp).to.gte(60);",
+							"});",
+							"",
+							"if (temp > 60) {",
+							"    pm.environment.set(\"next_location\", \"bangalore\");",
+							"} else {",
+							"    pm.environment.set(\"next_location\", \"london\");",
+							"}",
+							"",
+							"postman.setNextRequest(\"Get Next Weather\")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openweathermap.org/data/2.5/weather?q=san francisco&appid={{api_key}}&units={{units}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "san francisco"
+						},
+						{
+							"key": "appid",
+							"value": "{{api_key}}"
+						},
+						{
+							"key": "units",
+							"value": "{{units}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Next Weather",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "610573a8-1cc1-4d20-8041-4b479ada2326",
+						"exec": [
+							"const nextLocation = pm.environment.get(\"next_location\");",
+							"",
+							"pm.test(`Successful request for ${nextLocation} weather.`, function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.openweathermap.org/data/2.5/weather?q={{next_location}}&appid={{api_key}}&units={{units}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "{{next_location}}"
+						},
+						{
+							"key": "appid",
+							"value": "{{api_key}}"
+						},
+						{
+							"key": "units",
+							"value": "{{units}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ffa9e96c-e26a-4400-9143-ac3c6e375973",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b59f03df-557e-4549-b40e-ee23297e1ebb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
